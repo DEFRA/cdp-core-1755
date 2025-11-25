@@ -1,0 +1,46 @@
+name: "PR checks"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      foo: ${{ steps.filter.outputs.foo }}
+      bar: ${{ steps.filter.outputs.bar }}
+    steps:
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          foo:
+            - 'foo/**'
+          bar:
+            - 'bar/**'
+
+  foo:
+    needs: changes
+    if: ${{ needs.changes.outputs.foo == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test against foo
+        run: |
+          grep -i foo foo/README.md
+
+  bar:
+    needs: changes
+    if: ${{ needs.changes.outputs.bar == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test against bar
+        run: |
+          grep -i bar bar/README.md
