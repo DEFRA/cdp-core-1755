@@ -21,4 +21,4 @@ jobs:
 
       - name: Test against bar
         run: |
-          cat bar/README.md
+          grep -i bar bar/README.md
