@@ -1,2 +1,1 @@
-Foo
-A change here too
+It's back: foo

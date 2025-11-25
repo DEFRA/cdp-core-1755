@@ -44,3 +44,12 @@ jobs:
       - name: Test against bar
         run: |
           grep -i bar bar/README.md
+
+  summary:
+    needs: [foo, bar]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for failures
+        if: needs.foo.result == 'failure' || needs.bar.result == 'failure'
+        run: exit 1
