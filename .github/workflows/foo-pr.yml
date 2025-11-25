@@ -21,4 +21,4 @@ jobs:
 
       - name: Test against foo
         run: |
-          cat foo/README.md
+          grep -i foo foo/README.md
