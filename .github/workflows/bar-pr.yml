@@ -4,8 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - bar/**
 
 permissions:
   contents: read
@@ -19,6 +17,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check for bar changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            bar:
+              - 'bar/**'
+
       - name: Test against bar
+        if: steps.filter.outputs.bar == 'true'
         run: |
           grep -i bar bar/README.md
+
+      - name: Skip - no bar changes
+        if: steps.filter.outputs.bar != 'true'
+        run: echo "No changes in bar, skipping tests"

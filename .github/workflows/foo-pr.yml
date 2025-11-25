@@ -4,8 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - foo/**
 
 permissions:
   contents: read
@@ -19,6 +17,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check for foo changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            foo:
+              - 'foo/**'
+
       - name: Test against foo
+        if: steps.filter.outputs.foo == 'true'
         run: |
           grep -i foo foo/README.md
+
+      - name: Skip - no foo changes
+        if: steps.filter.outputs.foo != 'true'
+        run: echo "No changes in foo, skipping tests"
