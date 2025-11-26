@@ -61,6 +61,7 @@ jobs:
         uses: rojopolis/spellcheck-github-actions@v0
         with:
           source_files: ${{ needs.changes.outputs.markdown_files }}
+          task_name: spellcheck_markdown
 
   summary:
     needs: [foo, bar, markdown]
