@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Test against foo
         run: |
-          grep -i foo foo/README.md
+          grep -i foo foo/code.txt
 
   bar:
     needs: changes
@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Test against bar
         run: |
-          grep -i bar bar/README.md
+          grep -i bar bar/code.txt
 
   summary:
     needs: [foo, bar]
